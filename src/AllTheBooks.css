@@ -1,0 +1,15 @@
+.inputStyle {
+    font-size: 20px;
+    width: fit-content;
+    padding: 5px;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+}
+
+.inputStyle:focus {
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    outline: none;
+}

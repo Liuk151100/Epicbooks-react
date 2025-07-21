@@ -1,0 +1,28 @@
+body {
+    font-family: Georgia, 'Times New Roman', Times, serif !important;
+}
+
+@media (max-width: 1000px) {
+
+    .cardAdaptiveWidth {
+
+        width: 100% !important;
+        height: fit-content !important;
+    }
+
+    .contImgAdaptiveWidth {
+        width: 50% !important;
+    }
+}
+
+@media (min-width: 1800px) {
+
+    .cardAdaptiveWidth {
+
+        width: 30% !important;
+    }
+
+    .contImgAdaptiveWidth {
+        width: 50% !important;
+    }
+}
