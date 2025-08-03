@@ -14,8 +14,6 @@ function Welcome() {
 
   return (
     <>
-      <h2 className="m-3">E-book Epicbooks</h2>
-
       {mostraAlert && (
         ["success"].map((variant) => (
           <Alert key={variant} variant={variant} className="mx-1 my-3">
