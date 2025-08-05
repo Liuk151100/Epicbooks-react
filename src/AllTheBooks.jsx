@@ -1,10 +1,9 @@
-
 import SingleBook from './SingleBook.jsx';
-import { useState, useEffect, useMemo, Container, Raw, Col } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import PaginationComponents from './PaginationComponents.jsx';
+import { Container, Row, Col } from 'react-bootstrap';
 
-
-function AllTheBooks({ foundBooks, active, setActive}) {
+function AllTheBooks({ foundBooks, active, setActive, setImgBookDetails }) {
 
     if (!Array.isArray(foundBooks)) {
         console.log('null')
@@ -12,54 +11,42 @@ function AllTheBooks({ foundBooks, active, setActive}) {
     }
 
     const [selectedBookKey, setSelectedBookKey] = useState(null);
-    const [booksForPage, setBooksForPage] = useState([])
+    const [booksForPage, setBooksForPage] = useState([]);
     const [pages, setPages] = useState();
-    
-
 
     useEffect(() => {
-        console.log(foundBooks.length)
-        setBooksForPage(foundBooks.slice((active - 1) * 20, active * 20))
-        setPages(Math.ceil(foundBooks.length / 20))
-    }, [foundBooks,active])
+        setBooksForPage(foundBooks.slice((active - 1) * 20, active * 20));
+        setPages(Math.ceil(foundBooks.length / 20));
+    }, [foundBooks, active]);
 
-
-
-    // ✅ Memoizza il render dei libri solo se foundBooks cambia
     const booksList = useMemo(() => {
-
         return booksForPage.map((book) => (
-            <SingleBook
-                key={book.asin}
-                keyBook={book.asin}
-                title={book.title}
-                img={book.img}
-                price={book.price}
-                isSelected={selectedBookKey === book.asin}
-                setSelectedBookKey={setSelectedBookKey}
-                selectedBookKey={selectedBookKey}
-            />
+            <Col key={book.asin} xs={12} sm={6} md={4} lg={3} className="mb-4 d-flex">
+                <SingleBook
+                    keyBook={book.asin}
+                    title={book.title}
+                    img={book.img}
+                    price={book.price}
+                    isSelected={selectedBookKey === book.asin}
+                    setSelectedBookKey={setSelectedBookKey}
+                    selectedBookKey={selectedBookKey}
+                    setImgBookDetails={setImgBookDetails}
+                />
+            </Col>
         ));
     }, [booksForPage, selectedBookKey]);
 
-
     return (
         <>
-            <div>
-                <PaginationComponents pages={pages} active={active} setActive={setActive} />
-            </div>
+            <PaginationComponents pages={pages} active={active} setActive={setActive} />
 
-            <div className='my-4' style={{ flexWrap: 'wrap' }}>
-                <div className='d-flex'>
-                    <div className='d-flex justify-content-center' style={{ flexWrap: 'wrap' }}>
-                        {booksList}
-                    </div>
-                </div>
-            </div>
+            <Container className="my-4">
+                <Row>
+                    {booksList}
+                </Row>
+            </Container>
 
-            <div>
-                <PaginationComponents pages={pages} active={active} setActive={setActive} />
-            </div>
+            <PaginationComponents pages={pages} active={active} setActive={setActive} />
         </>
     );
 }

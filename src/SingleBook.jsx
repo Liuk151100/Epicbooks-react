@@ -1,82 +1,66 @@
 import React, { useState } from 'react';
-import { Card } from 'react-bootstrap';
+import { Card, Button } from 'react-bootstrap';
 import styles from "./SingleBook.module.css";
 import { Link} from 'react-router';
 
-function SingleBook({ keyBook, title, img, price, setSelectedBookKey, selectedBookKey }) {
+function SingleBook({ keyBook, title, img, price, setSelectedBookKey, selectedBookKey, setImgBookDetails }) {
+    const [hovered, setHovered] = useState(false);
 
     const handleClick = () => {
-        if (selectedBookKey != keyBook) {
-            setSelectedBookKey(keyBook);
-        } else {
-            setSelectedBookKey(null)
-        }
+        setSelectedBookKey(selectedBookKey === keyBook ? null : keyBook);
     };
-    const [btnViewDetails, setBtnViewDetails] = useState('none')
-
-    const forViewBtnDetail = () => {
-        setBtnViewDetails('block')
-
-    }
-    const forHiddenBtnDetail = () => {
-        setBtnViewDetails('none')
-    }
 
     return (
+        <Card
+            className={`shadow-sm position-relative w-100 h-100 ${hovered ? styles.cardHover : ''}`}
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+        >
+            <Card.Img
+                variant="top"
+                src={img}
+                onClick={handleClick}
+                style={{ objectFit: 'cover', height: '300px', cursor: 'pointer' }}
+            />
+            <Card.Body className="d-flex flex-column justify-content-between">
+                <div>
+                    <Card.Title className="fw-bold">{title}</Card.Title>
+                    <Card.Text className="text-secondary small">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, odio.
+                    </Card.Text>
+                </div>
 
-        <Card style={{ width: '40%', alignItems: 'center', margin: '10px', flexDirection: 'row' }} className='cardAdaptiveWidth' onMouseOver={forViewBtnDetail} onMouseOut={forHiddenBtnDetail}>
-            <div
-                className='contImgAdaptiveWidth'
-                style={{
-                    height: '100%',
-                    width: '50%',
-                    // border: isSelected ? 'solid 3px red' : 'none',
-                }}>
-                <Card.Img
-                    style={{
-                        height: '100%',
-                        width: '100%',
-
-                    }}
-                    src={img}
-                    onClick={handleClick}
-                />
-            </div>
-
-            <Card.Body style={{ width: '50%'/*, fontSize: isSelected ? '0.9em' : '1em'*/ }}>
-                <h4>{title}</h4>
-
-                <p className="text-body-secondary">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Minus et enim, earum, alias, sit consequatur dolor nobis iste laborum error ducimus deserunt. Laborum, iure quis.</p>
-
-                <h4>{price}€</h4>
-
-                <p className="text-body-secondary" >Ultimo aggiornamento 3 minuti fa</p>
+                <div className="d-flex justify-content-between align-items-center">
+                    <span className="fw-bold text-primary">{price} €</span>
+                    <small className="text-muted">Ultimo aggiornamento 3 min fa</small>
+                </div>
             </Card.Body>
 
-            <div style={{ display: `${btnViewDetails}`, width: '100%', height: '100%', backgroundColor: 'rgb(126 128 128 / 74%)', position: 'absolute' }}>
-                <Link className={styles.btnDetailBook} to={`CommentArea/${keyBook} `}>View Details</Link>
-            </div>
-
+            {hovered && (
+                <div className={`${styles.overlay}`}>
+                    <Link
+                        className={styles.btnDetailBook}
+                        to={`/CommentArea/${keyBook}`}
+                        onClick={() => setImgBookDetails(img)}
+                    >
+                        View Details
+                    </Link>
+                </div>
+            )}
         </Card>
     );
 }
 
-// ✅ Memo con confronto personalizzato
 function areEqual(prevProps, nextProps) {
     const keysToCompare = ['keyBook', 'title', 'img', 'price'];
-
     for (let key of keysToCompare) {
         if (prevProps[key] !== nextProps[key]) return false;
     }
-
-    // Solo re-render se cambia isSelected
     if (prevProps.isSelected !== nextProps.isSelected) return false;
-
-    return true; // Altrimenti evita il re-render
+    return true;
 }
 
 export default React.memo(SingleBook, areEqual);
-
 
 
 

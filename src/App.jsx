@@ -1,6 +1,5 @@
 import Header from "./Header";
-import MyFooter from "./MyFooter";
-import Welcome from "./Welcome";
+import Footer from "./Footer";
 import AllTheBooks from "./AllTheBooks";
 import { useEffect, useState } from "react";
 import fantasy from "../books/fantasy.json";
@@ -8,6 +7,7 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import { Col, Container, Row } from "react-bootstrap";
 import NotFound from "./NotFound";
 import CommentArea from "./CommentArea";
+import About from "./About";
 
 
 function App() {
@@ -15,7 +15,8 @@ function App() {
     const [FilterBook, setFilterBook] = useState(fantasy)
     let foundBooks = FilterBook.filter(book => book.title.toLowerCase().includes(BookSearch.toLowerCase()))
     const [active, setActive] = useState(new URLSearchParams(window.location.search).get('page') || 1);
-    
+    const [imgBookDetails, setImgBookDetails] = useState(null)
+
 
     useEffect(() => {
         setActive(1)
@@ -31,8 +32,9 @@ function App() {
                     <Col>
 
                         <Routes>
-                            <Route path="/" element={<AllTheBooks foundBooks={foundBooks} active={active} setActive={setActive}/>} />
-                            <Route path="/CommentArea/:BookKey" element={<CommentArea />} />
+                            <Route path="/" element={<AllTheBooks foundBooks={foundBooks} active={active} setActive={setActive} setImgBookDetails={setImgBookDetails} />} />
+                            <Route path="/CommentArea/:BookKey" element={<CommentArea imgBookDetails={{ imgBookDetails: imgBookDetails }} />} />
+                            <Route path="/About" element={<About />} />
                             <Route path="*" element={<NotFound />} />
                         </Routes>
                     </Col>
@@ -40,7 +42,7 @@ function App() {
 
             </Container>
 
-            <MyFooter />
+            <Footer />
 
         </BrowserRouter>
     );
