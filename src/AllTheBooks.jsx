@@ -7,7 +7,7 @@ function AllTheBooks({ foundBooks, active, setActive, setImgBookDetails }) {
 
     if (!Array.isArray(foundBooks)) {
         console.log('null')
-        return <p>Nessun libro trovato o dati non validi.</p>;
+        return <div style={{height:"65vh", display:"flex", justifyContent: "center"}}><p style={{marginTop: "20px"}}>Nessun libro trovato o dati non validi.</p></div>;
     }
 
     const [selectedBookKey, setSelectedBookKey] = useState(null);
